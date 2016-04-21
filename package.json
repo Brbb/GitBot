@@ -30,6 +30,10 @@
   "devDependencies": {},
   "bundleDependencies": [],
 
+    "scripts":{
+        "start":"node server.js"
+    },
+    
   "private": true,
   "main": "server.js"
 }
