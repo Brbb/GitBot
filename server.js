@@ -14,5 +14,5 @@ bot.on('message', function (msg) {
   var chatId = msg.chat.id;
   var voiceDuration = msg.voice.duration;
   bot.sendMessage(chatId, "I'm alive!");
-    bot.sendMessage(chatId, voiceDuration);
+ bot.sendMessage(chatId, ":::"+voiceDuration);
 });
