@@ -15,6 +15,8 @@ bot.on('message', function (msg) {
   var voiceDuration = msg.voice.duration;
   bot.sendMessage(chatId, "I'm alive!");
   bot.sendMessage(chatId, msg.voice.file_id);
-  var voiceFilePath = bot.getFileLink(msg.voice.file_id);
-  bot.sendMessage(chatId, ":::"+voiceFilePath);
+  bot.getFileLink(msg.voice.file_id).then(function(resp){
+    bot.sendMessage(chatId, ":::"+resp);    
+  });
+  
 });
