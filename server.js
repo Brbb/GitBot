@@ -35,6 +35,24 @@ bot.on('message', function (msg) {
                 else
                     console.log('File deleted successfully!');
             });
+
+            var outputVoicePath = 'resources/output/translation.wav';
+            fs.stat(outputVoicePath, function (err, stats) {
+                if (err) {
+                    bot.sendMessage(chatId, 'Uh-Oh, something went wrong...');
+                } else {
+                    bot.sendVoice(chatId, outputVoicePath)
+                        .then(function (doSomething) {
+                            fs.unlink(outputVoicePath, function (err) {
+                                if (err)
+                                    console.log(err);
+                                else
+                                    console.log('File deleted successfully!');
+                            });
+                        });
+                }
+            })
+
         });
     } else {
         console.log('No voice msg');
