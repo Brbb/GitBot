@@ -28,9 +28,7 @@ bot.on('message', function (msg) {
         });
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
             bot.sendMessage(chatId, resp);
-            watson.recognize(resp).then(function(test){
-                bot.sendMessage(chatId, 'Output created!');
-            });
+            watson.recognize(resp);
             fs.unlink(resp, function (err) {
                 if (err)
                     console.log(err);
@@ -38,7 +36,7 @@ bot.on('message', function (msg) {
                     console.log('File deleted successfully!');
             });
 
-            var outputVoicePath = 'resources/output/translation.wav';
+            var outputVoicePath = 'resources/output/'+msg.voice.file_id;
             fs.stat(outputVoicePath, function (err, stats) {
                 if (err) {
                     bot.sendMessage(chatId, 'Uh-Oh, something went wrong...');
