@@ -36,7 +36,7 @@ bot.on('message', function (msg) {
                     console.log('File deleted successfully!');
             });
 
-            var outputVoicePath = 'resources/output/'+msg.voice.file_id;
+            var outputVoicePath = 'resources/output/'+ resp.split('.')[0].split('/').pop();
             bot.sendMessage(chatId,outputVoicePath);
             
             fs.stat(outputVoicePath, function (err, stats) {
