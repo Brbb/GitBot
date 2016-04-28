@@ -48,7 +48,7 @@ bot.on('message', function (msg) {
 
                 fs.stat(outputVoicePath, function (err, stats) {
                     if (err) {
-                        bot.sendMessage(chatId, 'Uh-Oh, something went wrong...');
+                        bot.sendMessage(chatId, err);
                     } else {
                         bot.sendVoice(chatId, outputVoicePath)
                             .then(function (doSomething) {
