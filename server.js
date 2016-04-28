@@ -28,12 +28,13 @@ bot.on('message', function (msg) {
         });
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
             bot.sendMessage(chatId, resp);
-            watson.recognize(resp);
+            watson.recognize(resp).then(function(e){
             fs.unlink(resp, function (err) {
                 if (err)
                     console.log(err);
                 else
                     console.log('File deleted successfully!');
+                });
             });
 
             // For now, only .wav
