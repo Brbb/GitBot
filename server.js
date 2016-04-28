@@ -29,16 +29,14 @@ bot.on('message', function (msg) {
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
             bot.sendMessage(chatId, resp);
             watson.recognize(resp);
-            fs.unlink(resp, function(err){
-                if(err)
+            fs.unlink(resp, function (err) {
+                if (err)
                     console.log(err);
                 else
                     console.log('File deleted successfully!');
             });
         });
-    }
-    else
-    {
+    } else {
         console.log('No voice msg');
     }
 });
