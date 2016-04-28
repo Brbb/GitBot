@@ -7,17 +7,28 @@ var port = process.env.OPENSHIFT_NODEJS_PORT;
 var host = process.env.OPENSHIFT_NODEJS_IP;
 var domain = process.env.OPENSHIFT_APP_DNS;
 
-var bot = new TelegramBot(token, {webHook: {port: port, host: host}});
+var bot = new TelegramBot(token, {
+    webHook: {
+        port: port,
+        host: host
+    }
+});
 // OpenShift enroutes :443 request to OPENSHIFT_NODEJS_PORT
-bot.setWebHook(domain+':443/bot'+token);
+bot.setWebHook(domain + ':443/bot' + token);
 bot.on('message', function (msg) {
-  var chatId = msg.chat.id;
-  var voiceDuration = msg.voice.duration;
-  bot.getFileLink(msg.voice.file_id).then(function(link){
-      bot.sendMessage(chatId,link);
-  });
-  bot.downloadFile(msg.voice.file_id,'resources/input').then(function(resp){
-    bot.sendMessage(chatId, resp);    
-  });
-  
+    var chatId = msg.chat.id;
+
+    if (msg.voice) {
+
+        var voiceDuration = msg.voice.duration;
+        bot.getFileLink(msg.voice.file_id).then(function (link) {
+            bot.sendMessage(chatId, link);
+        });
+        bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
+            bot.sendMessage(chatId, resp);
+        });
+    } else {
+        bot.sendMessage(chatId, 'Test');
+    }
+
 });
