@@ -37,6 +37,8 @@ bot.on('message', function (msg) {
             });
 
             var outputVoicePath = 'resources/output/'+msg.voice.file_id;
+            bot.sendMessage(chatId,outputVoicePath);
+            
             fs.stat(outputVoicePath, function (err, stats) {
                 if (err) {
                     bot.sendMessage(chatId, 'Uh-Oh, something went wrong...');
