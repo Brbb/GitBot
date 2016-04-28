@@ -31,7 +31,7 @@ bot.on('message', function (msg) {
             bot.sendMessage(chatId, resp);
             watson.recognize(resp);
             // For now, only .wav
-            var outputVoicePath = 'resources/output/' + filePathFromResp.split('.')[0].split('/').pop() + '.wav';
+            var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
             bot.sendMessage(chatId, outputVoicePath);
 
             fs.stat(outputVoicePath, function (err, stats) {
