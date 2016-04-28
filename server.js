@@ -26,12 +26,24 @@ bot.on('message', function (msg) {
         bot.getFileLink(msg.voice.file_id).then(function (link) {
             bot.sendMessage(chatId, link);
         });
+        
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
             bot.sendMessage(chatId, resp);
-            watson.recognize(resp, function () {
+            watson.recognize(resp);
+            writeOutputVoice(chatId,resp);
+
+        });
+    } else {
+        console.log('No voice msg');
+    }
+});
+
+
+
+ function writeOutputVoice(chatId, filePathFromResp) {
 
                 // For now, only .wav
-                var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
+                var outputVoicePath = 'resources/output/' + filePathFromResp.split('.')[0].split('/').pop() + '.wav';
                 bot.sendMessage(chatId, outputVoicePath);
 
                 fs.stat(outputVoicePath, function (err, stats) {
@@ -57,10 +69,4 @@ bot.on('message', function (msg) {
                             });
                     }
                 });
-            });
-
-        });
-    } else {
-        console.log('No voice msg');
-    }
-});
+            }
