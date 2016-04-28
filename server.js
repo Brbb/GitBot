@@ -43,12 +43,12 @@ bot.on('message', function (msg) {
                 } else {
                     bot.sendVoice(chatId, outputVoicePath)
                         .then(function (doSomething) {
-                            fs.unlink(outputVoicePath, function (err) {
-                                if (err)
-                                    console.log(err);
-                                else
-                                    console.log('File deleted successfully!');
-                            });
+                           // fs.unlink(outputVoicePath, function (err) {
+                           //     if (err)
+                           //         console.log(err);
+                           //     else
+                           //         console.log('File deleted successfully!');
+                           // });
                         });
                 }
             })
