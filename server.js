@@ -36,7 +36,8 @@ bot.on('message', function (msg) {
                     console.log('File deleted successfully!');
             });
 
-            var outputVoicePath = 'resources/output/'+ resp.split('.')[0].split('/').pop();
+            // For now, only .wav
+            var outputVoicePath = 'resources/output/'+ resp.split('.')[0].split('/').pop()+'.wav';
             bot.sendMessage(chatId,outputVoicePath);
             
             fs.stat(outputVoicePath, function (err, stats) {
