@@ -36,5 +36,9 @@ bot.on('message', function (msg) {
                     console.log('File deleted successfully!');
             });
         });
-    } 
+    }
+    else
+    {
+        console.log('No voice msg');
+    }
 });
