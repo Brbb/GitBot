@@ -16,7 +16,7 @@ bot.on('message', function (msg) {
   bot.sendMessage(chatId, "I'm alive!");
   bot.sendMessage(chatId, msg.voice.file_id);
   bot.downloadFile(msg.voice.file_id,'resources/input').then(function(resp){
-    bot.sendMessage(chatId, "resources/input/"+resp);    
+    bot.sendMessage(chatId, resp);    
   });
   
 });
