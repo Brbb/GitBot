@@ -13,7 +13,9 @@ bot.setWebHook(domain+':443/bot'+token);
 bot.on('message', function (msg) {
   var chatId = msg.chat.id;
   var voiceDuration = msg.voice.duration;
-  bot.sendMessage(chatId, msg.voice.file_id);
+  bot.getFileLink(msg.voice.file_id).then(function(link){
+      bot.sendMessage(chatId,link);
+  });
   bot.downloadFile(msg.voice.file_id,'resources/input').then(function(resp){
     bot.sendMessage(chatId, resp);    
   });
