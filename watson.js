@@ -23,6 +23,9 @@ var exports = module.exports = {};
 
 //'./res/input/f.oga'
 exports.recognize = function (voiceFile) {
+    
+    var outputVoiceFileName = voiceFile.split('.')[0].split('/').pop();
+    
     speech_to_text.recognize({
         // From file
         audio: fs.createReadStream(voiceFile),
@@ -73,7 +76,7 @@ exports.recognize = function (voiceFile) {
 
                             // Pipe the synthesized text to a file
                             text_to_speech.synthesize(tts_params)
-                                .pipe(fs.createWriteStream('./resources/output/translation.wav'));
+                                .pipe(fs.createWriteStream('./resources/output/'+outputVoiceFileName+'.wav'));
                         }
                     });
             }
