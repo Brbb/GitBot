@@ -74,6 +74,7 @@ exports.recognize = function (voiceFile) {
                                 voice: 'es-ES_EnriqueVoice'
                             };
 
+                            console.log('Producing output file...');
                             var writeStream = fs.createWriteStream('./resources/output/'+outputVoiceFileName+'.wav');
                             // Pipe the synthesized text to a file
                             text_to_speech.synthesize(tts_params).pipe(writeStream);
