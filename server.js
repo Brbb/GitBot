@@ -1,5 +1,7 @@
 // An example for OpenShift platform.
 var TelegramBot = require('node-telegram-bot-api');
+var watson = require('./watson.js');
+var fs = require('fs');
 
 var token = '208697960:AAFmqkbcQkb2iLk41E40XUpr4jEUzCyZlgw';
 // See https://developers.openshift.com/en/node-js-environment-variables.html
@@ -26,9 +28,13 @@ bot.on('message', function (msg) {
         });
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
             bot.sendMessage(chatId, resp);
+            watson.recognize(resp);
+            fs.unlink(resp, function(err){
+                if(err)
+                    console.log(err);
+                else
+                    console.log('File deleted successfully!');
+            });
         });
-    } else {
-        bot.sendMessage(chatId, 'Test');
-    }
-
+    } 
 });
