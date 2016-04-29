@@ -78,6 +78,7 @@ exports.recognize = function (voiceFile) {
                             var writeStream = fs.createWriteStream('resources/output/'+outputVoiceFileName+'.wav');
                             // Pipe the synthesized text to a file
                             text_to_speech.synthesize(tts_params).pipe(writeStream);
+                            console.log('Produced output file.');
                             
                         }
                     });
