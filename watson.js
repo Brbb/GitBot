@@ -22,7 +22,7 @@ var language_translation = watson.language_translation({
 var exports = module.exports = {};
 
 //'./res/input/f.oga'
-exports.recognize = function (voiceFile) {
+exports.recognize = function (voiceFile, callback) {
     
     var outputVoiceFileName = voiceFile.split('.')[0].split('/').pop();
     
@@ -79,7 +79,7 @@ exports.recognize = function (voiceFile) {
                             // Pipe the synthesized text to a file
                             text_to_speech.synthesize(tts_params).pipe(writeStream);
                             console.log('Produced output file.');
-                            
+                            callback();
                         }
                     });
             }
