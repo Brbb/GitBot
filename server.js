@@ -23,47 +23,53 @@ bot.on('message', function (msg) {
     if (msg.voice) {
 
         var voiceDuration = msg.voice.duration;
-        bot.getFileLink(msg.voice.file_id).then(function (link) {
-            bot.sendMessage(chatId, link);
-        });
+
+        // DEBUG :: Show the file link on server
+        // bot.getFileLink(msg.voice.file_id).then(function (link) {
+        //    bot.sendMessage(chatId, link);
+        // });
 
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
 
             // DEBUG code to delete
             // bot.sendMessage(chatId, resp);
+            bot.sendChatAction(chatId, 'upload_audio').then(function () {
+                watson.recognize(resp, function (outputVoicePath) {
 
-            watson.recognize(resp, function (outputVoicePath) {
+                    // For now, only .wav
+                    // DEBUG code to delete!
+                    //var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
+                    // bot.sendMessage(chatId, outputVoicePath);
 
-                // For now, only .wav
-                // DEBUG code to delete!
-                 //var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
-                // bot.sendMessage(chatId, outputVoicePath);
 
-                fs.stat(outputVoicePath, function (err, stats) {
-                    if (err) {
-                        bot.sendMessage(chatId, 'Error ' + err);
-                    } else {
-                        bot.sendVoice(chatId, outputVoicePath)
-                            .then(function () {
 
-                                fs.unlink(resp, function (err) {
-                                    if (err)
-                                        console.log(err);
-                                    else
-                                        console.log('File deleted successfully!');
+                    fs.stat(outputVoicePath, function (err, stats) {
+                        if (err) {
+                            bot.sendMessage(chatId, 'Error ' + err);
+                        } else {
+                            bot.sendVoice(chatId, outputVoicePath)
+                                .then(function () {
+
+                                    fs.unlink(resp, function (err) {
+                                        if (err)
+                                            console.log(err);
+                                        else
+                                            console.log('File deleted successfully!');
+                                    });
+
+                                    // fs.unlink(outputVoicePath, function (err) {
+                                    //     if (err)
+                                    //         console.log(err);
+                                    //     else
+                                    //         console.log('File deleted successfully!');
+                                    // });
                                 });
+                        }
 
-                                // fs.unlink(outputVoicePath, function (err) {
-                                //     if (err)
-                                //         console.log(err);
-                                //     else
-                                //         console.log('File deleted successfully!');
-                                // });
-                            });
-                    }
-
+                    });
                 });
             });
+
         });
     } else {
         console.log('No voice msg');
