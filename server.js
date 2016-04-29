@@ -28,15 +28,15 @@ bot.on('message', function (msg) {
         });
 
         bot.downloadFile(msg.voice.file_id, 'resources/input').then(function (resp) {
-            
+
             // DEBUG code to delete
             // bot.sendMessage(chatId, resp);
-            
-            watson.recognize(resp, function () {
-                
+
+            watson.recognize(resp, function (outputVoicePath) {
+
                 // For now, only .wav
                 // DEBUG code to delete!
-                // var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
+                 //var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
                 // bot.sendMessage(chatId, outputVoicePath);
 
                 fs.stat(outputVoicePath, function (err, stats) {
