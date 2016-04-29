@@ -23,9 +23,9 @@ var exports = module.exports = {};
 
 //'./res/input/f.oga'
 exports.recognize = function (voiceFile, callback) {
-    
+
     var outputVoiceFileName = voiceFile.split('.')[0].split('/').pop();
-    
+
     speech_to_text.recognize({
         // From file
         audio: fs.createReadStream(voiceFile),
@@ -36,12 +36,13 @@ exports.recognize = function (voiceFile, callback) {
         else {
             console.log(JSON.stringify(res, null, 2));
 
-            if (res.results.length < 1) {
-                console.log("No results.");
-            } else {
+            var maxConfidence = 0;
+            var error = 'Please repeat, try to speak clearly!';
+            var message = '';
 
-                var maxConfidence = 0;
-                var message = '';
+            if (res.results.length < 1) {
+                callback(error, null);
+            } else {
 
                 res.results.forEach(function (result) {
                     result.alternatives.forEach(function (alternative) {
@@ -53,38 +54,40 @@ exports.recognize = function (voiceFile, callback) {
                 });
 
                 if (maxConfidence < 0.5) {
-                    var message = 'Please repeat, try to speak slowly!';
+                    error = 'Please repeat, try to speak slowly!';
+                    callback(error, null);
+                } else {
+
+                    language_translation.translate({
+                            text: message,
+                            source: 'en',
+                            target: 'es'
+                        },
+                        function (err, translationRes) {
+                            if (err)
+                                console.log('error:', err);
+                            else {
+                                //console.log(JSON.stringify(translationRes, null, 2));
+                                var translationText = translationRes.translations[0].translation;
+                                console.log(translationText);
+
+                                var tts_params = {
+                                    text: translationText,
+                                    voice: 'es-ES_EnriqueVoice'
+                                };
+
+                                console.log('Producing output file...');
+                                var outputVoiceFileNamePath = 'resources/output/' + outputVoiceFileName + '.wav';
+                                var writeStream = fs.createWriteStream(outputVoiceFileNamePath);
+                                // Pipe the synthesized text to a file
+                                text_to_speech.synthesize(tts_params).pipe(writeStream);
+                                writeStream.on('finish', function () {
+                                    console.log('Produced output file.');
+                                    callback(null, outputVoiceFileNamePath);
+                                });
+                            }
+                        });
                 }
-
-                language_translation.translate({
-                        text: message,
-                        source: 'en',
-                        target: 'es'
-                    },
-                    function (err, translationRes) {
-                        if (err)
-                            console.log('error:', err);
-                        else {
-                            //console.log(JSON.stringify(translationRes, null, 2));
-                            var translationText = translationRes.translations[0].translation;
-                            console.log(translationText);
-
-                            var tts_params = {
-                                text: translationText,
-                                voice: 'es-ES_EnriqueVoice'
-                            };
-
-                            console.log('Producing output file...');
-                            var outputVoiceFileNamePath = 'resources/output/'+outputVoiceFileName+'.wav';
-                            var writeStream = fs.createWriteStream(outputVoiceFileNamePath);
-                            // Pipe the synthesized text to a file
-                            text_to_speech.synthesize(tts_params).pipe(writeStream);
-                            writeStream.on('finish',function(){
-                            console.log('Produced output file.');
-                            callback(outputVoiceFileNamePath);
-                            });
-                        }
-                    });
             }
         }
 

@@ -34,39 +34,36 @@ bot.on('message', function (msg) {
             // DEBUG code to delete
             // bot.sendMessage(chatId, resp);
             bot.sendChatAction(chatId, 'upload_audio').then(function () {
-                watson.recognize(resp, function (outputVoicePath) {
-
-                    // For now, only .wav
-                    // DEBUG code to delete!
-                    //var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
-                    // bot.sendMessage(chatId, outputVoicePath);
+                watson.recognize(resp, function (err, outputVoicePath) {
 
 
+                    if (err) {
+                        bot.sendMessage(chatId, err);
+                    } else {
 
-                    fs.stat(outputVoicePath, function (err, stats) {
-                        if (err) {
-                            bot.sendMessage(chatId, 'Error ' + err);
-                        } else {
-                            bot.sendVoice(chatId, outputVoicePath)
-                                .then(function () {
+                        // For now, only .wav
+                        // DEBUG code to delete!
+                        //var outputVoicePath = 'resources/output/' + resp.split('.')[0].split('/').pop() + '.wav';
+                        // bot.sendMessage(chatId, outputVoicePath);
 
-                                    fs.unlink(resp, function (err) {
-                                        if (err)
-                                            console.log(err);
-                                        else
-                                            console.log('File deleted successfully!');
+                        fs.stat(outputVoicePath, function (err, stats) {
+                            if (err) {
+                                bot.sendMessage(chatId, 'Error ' + err);
+                            } else {
+                                bot.sendVoice(chatId, outputVoicePath)
+                                    .then(function () {
+
+                                        fs.unlink(resp, function (err) {
+                                            if (err)
+                                                console.log(err);
+                                            else
+                                                console.log('File deleted successfully!');
+                                        });
                                     });
+                            }
 
-                                    // fs.unlink(outputVoicePath, function (err) {
-                                    //     if (err)
-                                    //         console.log(err);
-                                    //     else
-                                    //         console.log('File deleted successfully!');
-                                    // });
-                                });
-                        }
-
-                    });
+                        });
+                    }
                 });
             });
 
