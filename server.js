@@ -3,7 +3,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var watson = require('./watson.js');
 var fs = require('fs');
 
-var token = '208697960:AAFmqkbcQkb2iLk41E40XUpr4jEUzCyZlgw';
+var token = '208697960:AAFmqkbcQkb..';
 // See https://developers.openshift.com/en/node-js-environment-variables.html
 var port = process.env.OPENSHIFT_NODEJS_PORT;
 var host = process.env.OPENSHIFT_NODEJS_IP;
