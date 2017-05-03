@@ -1,6 +1,1 @@
-The OpenShift `nodejs` cartridge documentation can be found at:
-
-http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
-
-
-Speriamo funzioni
+A Telegram Bot using IBM Watson to translate vocal messages to any language (text).
